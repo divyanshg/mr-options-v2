@@ -10,7 +10,7 @@ import TAResults from '../components/TAResults';
 
 export default function Home() {
   const { user } = useUser();
-
+  //test for commit
   useEffect(() => {
     console.log(user);
   }, [user]);
