@@ -8,7 +8,7 @@ import useUser from '@/hooks/useUser';
 
 export default function Home() {
   const { user } = useUser();
-  //test for commit
+  
   useEffect(() => {
     console.log(user);
   }, [user]);
