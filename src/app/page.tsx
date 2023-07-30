@@ -6,8 +6,6 @@ import Survey from '@/components/Survey';
 import UserForm from '@/components/UserForm';
 import useUser from '@/hooks/useUser';
 
-import TAResults from '../components/TAResults';
-
 export default function Home() {
   const { user } = useUser();
   //test for commit
