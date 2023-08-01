@@ -84,7 +84,7 @@ const Page: FC<pageProps> = ({}) => {
     if (value && value.length > 0 && loggedIn) get();
   }, [value]);
 
-  const handleSurveyChange = async (surveyName: string) => {
+  const handleSurveyChange = (surveyName: string) => {
     setSelectedResponse("");
     switch (surveyName) {
       case "School of Leadership and Management":

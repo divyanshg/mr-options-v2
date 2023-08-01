@@ -22,6 +22,19 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     return data;
   };
 
+  const getSurveyShortCode = (surveyName: string) => {
+    switch (surveyName) {
+      case "transactional_analysis":
+        return "TA";
+      case "FIRO-B":
+        return "FR";
+      case "discovering_work_type":
+        return "WT";
+      default:
+        return "TA";
+    }
+  };
+
   const {
     data: survey,
     error,
@@ -133,7 +146,14 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     });
   }
 
-  if (submitted) return <Results type="TA" responses={responses} user={user} />;
+  if (submitted)
+    return (
+      <Results
+        type={getSurveyShortCode(id)}
+        responses={responses}
+        user={user}
+      />
+    );
 
   if (survey) {
     return (
