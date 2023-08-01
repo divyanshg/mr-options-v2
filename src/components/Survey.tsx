@@ -125,8 +125,6 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
       response,
     }));
 
-    console.log(responses);
-
     saveResponses({
       user,
       survey_id: survey.id,

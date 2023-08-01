@@ -11,7 +11,6 @@ interface ResultsProps {
 }
 
 const Results: FC<ResultsProps> = ({ type, responses, user }) => {
-  console.log(responses);
   return (
     <div>
       <UserData {...user} />
