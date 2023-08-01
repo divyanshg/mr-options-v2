@@ -138,7 +138,7 @@ const Survey: FC<StudentSurveyProps> = ({
     return (
       <div className="flex flex-col w-full my-4">
         <div className="flex flex-col items-center justify-center space-y-2">
-          <h1 className="text-xl font-semibold">{survey.title}</h1>
+          <h1 className="text-xl font-semibold text-center">{survey.title}</h1>
           <pre>{survey.description}</pre>
         </div>
         <form id="questions-form" onSubmit={handleSubmit(onSubmit)}>
