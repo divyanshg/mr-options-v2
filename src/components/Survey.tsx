@@ -36,7 +36,9 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
       const payload = data;
       return axios.post("/api/survey/responses/new", payload);
     },
-    onError: () => {
+    onError: (e) => {
+      console.log(e);
+      setIsLoading(false);
       toast({
         title: "Error",
         description: "Something went wrong while saving your responses.",
@@ -79,6 +81,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
 
   useEffect(() => {
     if (error) {
+      console.log(error);
       toast({
         title: "Error",
         description: "Something went wrong while fetching the questions.",
