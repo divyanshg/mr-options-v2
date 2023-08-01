@@ -26,8 +26,8 @@ const SurveySelector: FC<SurveySelectorProps> = ({}) => {
           {surveys?.map((survey: any) => (
             <Link key={survey.id} href={`/employee/survey/${survey.id}`}>
               <div className="p-4 border border-gray-200 rounded-lg">
-                <p>{survey.title}</p>
-                <p>{survey.description}</p>
+                <p className='text-lg font-semibold'>{survey.title}</p>
+                <p className='truncate'>{survey.description}</p>
               </div>
             </Link>
           ))}

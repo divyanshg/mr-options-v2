@@ -15,9 +15,7 @@ interface StudentSurveyProps {
   id?: string;
 }
 
-const Survey: FC<StudentSurveyProps> = ({
-  id = "transactional_analysis",
-}) => {
+const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
   const fetchSurvey = async () => {
     const { data } = await axios.get(`/api/survey?surveyId=${id}`);
     return data;
@@ -139,17 +137,19 @@ const Survey: FC<StudentSurveyProps> = ({
       <div className="flex flex-col w-full my-4">
         <div className="flex flex-col items-center justify-center space-y-2">
           <h1 className="text-xl font-semibold text-center">{survey.title}</h1>
-          <pre>{survey.description}</pre>
+          <p className="px-3 mx-3">{survey.description}</p>
         </div>
         <form id="questions-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col p-4 mx-2 space-y-2">
-            {survey.questions.map((question: any) => (
-              <Question
-                key={question.question_id}
-                question={question}
-                register={register}
-              />
-            ))}
+            {survey.questions
+              .sort((a: any, b: any) => a.question_number - b.question_number) // Assuming question_id is a numeric property
+              .map((question: any) => (
+                <Question
+                  key={question.question_id}
+                  question={question}
+                  register={register}
+                />
+              ))}
           </div>
           <div className="flex flex-col p-4 py-2 mx-2 space-y-2">
             <Button isLoading={isBtnLoading} type="submit">
