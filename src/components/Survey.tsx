@@ -7,6 +7,7 @@ import useUser from '@/hooks/useUser';
 import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { useToast } from '../hooks/use-toast';
+import { modify } from '../lib/responseModifier';
 import Question from './Question';
 import Results from './Results';
 import { Button } from './ui/Button';
@@ -32,7 +33,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
   const [responses, setResponses] = useState<any>({});
 
   const { mutate: saveResponses } = useMutation({
-    mutationFn: (data: any) => {
+    mutationFn: async (data: any) => {
       const payload = data;
       return axios.post("/api/survey/responses/new", payload);
     },

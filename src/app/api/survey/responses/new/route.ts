@@ -1,120 +1,11 @@
-// import { db } from '@/lib/db';
-
-// export async function POST(req: Request) {
-//   try {
-//     const body = await req.json();
-
-//     if (body.user.type === "student") {
-//       for (const responseItem of body.responses) {
-//         const questionId = parseInt(responseItem.id, 10);
-//         const responseValue = parseInt(responseItem.response, 10);
-
-//         await db.responses.create({
-//           data: {
-//             survey: {
-//               connect: {
-//                 id: body.survey_id,
-//               },
-//             },
-//             question: {
-//               connect: {
-//                 question_id: questionId,
-//               },
-//             },
-//             option: {
-//               connect: {
-//                 option_id: responseValue, // Assuming response value corresponds to option_id
-//               },
-//             },
-//             student: {
-//               connect: {
-//                 id: body.user.id,
-//               },
-//             },
-//           },
-//         });
-//       }
-//     } else if (body.user.type === "employee") {
-//       for (const responseItem of body.responses) {
-//         const questionId = parseInt(responseItem.id, 10);
-//         const responseValue = parseInt(responseItem.response, 10);
-
-//         await db.responses.create({
-//           data: {
-//             survey: {
-//               connect: {
-//                 id: body.survey_id,
-//               },
-//             },
-//             question: {
-//               connect: {
-//                 question_id: questionId,
-//               },
-//             },
-//             option: {
-//               connect: {
-//                 option_id: responseValue, // Assuming response value corresponds to option_id
-//               },
-//             },
-//             employee: {
-//               create: {
-//                 name: body.user.name,
-//                 age: parseInt(body.user.age, 10),
-//                 workExperience: body.user.workExperience,
-//                 orgName: body.user.orgName,
-//                 gender: body.user.gender,
-//               },
-//             },
-//           },
-//         });
-//       }
-//     }
-
-//     return new Response(JSON.stringify({ message: "Success" }), {
-//       status: 200,
-//     });
-//   } catch (e) {
-//     console.log(e);
-//     return new Response(
-//       JSON.stringify({ error: "Something went wrong. Please try again" }),
-//       {
-//         status: 500,
-//       }
-//     );
-//   }
-// }
 import { db } from '@/lib/db';
 
 type ResponseItem = {
-  survey: {
-    connect: {
-      id: number;
-    };
-  };
-  question: {
-    connect: {
-      question_id: number;
-    };
-  };
-  option: {
-    connect: {
-      option_id: number;
-    };
-  };
-  student?: {
-    connect: {
-      id: number;
-    };
-  };
-  employee?: {
-    create: {
-      name: string;
-      age: number;
-      workExperience: string;
-      orgName: string;
-      gender: string;
-    };
-  };
+  survey_id: string;
+  question_id: number;
+  option_id: number;
+  student_id?: string;
+  employee_id?: string;
 };
 
 type CreateManyInput = {
@@ -125,46 +16,31 @@ type CreateManyInput = {
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const responsesData = [];
+    const responsesData: ResponseItem[] = []; // Initialize as an empty array
+
+    console.log(body);
 
     for (const responseItem of body.responses) {
-      const questionId = parseInt(responseItem.id, 10);
-      const responseValue = parseInt(responseItem.response, 10);
+      const questionId = responseItem.id; // No need for parseInt, it's already a number
+      const responseValue = responseItem.response; // No need for parseInt, it's already a number
 
       const responseData: ResponseItem = {
-        survey: {
-          connect: {
-            id: body.survey_id,
-          },
-        },
-        question: {
-          connect: {
-            question_id: questionId,
-          },
-        },
-        option: {
-          connect: {
-            option_id: responseValue,
-          },
-        },
+        survey_id: body.survey_id,
+        question_id: Number(questionId),
+        option_id: Number(responseValue),
       };
 
       if (body.user.type === "student") {
-        responseData["student"] = {
-          connect: {
-            id: body.user.id,
-          },
-        };
+        responseData["student_id"] = body.user.id;
       } else if (body.user.type === "employee") {
-        responseData["employee"] = {
-          create: {
-            name: body.user.name,
-            age: parseInt(body.user.age, 10),
-            workExperience: body.user.workExperience,
-            orgName: body.user.orgName,
-            gender: body.user.gender,
-          },
-        };
+        let employee = await (db.employee as any).create({
+          name: body.user.name,
+          age: body.user.age,
+          workExperience: body.user.workExperience,
+          orgName: body.user.orgName,
+          gender: body.user.gender,
+        });
+        responseData["employee_id"] = employee.id;
       }
 
       responsesData.push(responseData);
