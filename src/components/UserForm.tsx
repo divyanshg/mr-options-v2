@@ -86,7 +86,7 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
   const onSubmit = async (data: any) => {
     const _payload = {
       ...data,
-      rollNumber: data.rollNumber.toUpperCase(),
+      ...(data.rollNumber ? { rollNumber: data.rollNumber.toUpperCase() } : {}),
     };
     if (type === "student") verifyUser(_payload);
     else {
