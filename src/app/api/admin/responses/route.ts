@@ -56,7 +56,7 @@ export async function GET(req: Request) {
           };
         }
         studentResponses[item.student.rollNumber].responses[
-          `question_${item.question.question_id}`
+          `question_${item.question.question_number}`
         ] = item.option.option_number;
       }
     });
@@ -72,7 +72,7 @@ export async function GET(req: Request) {
           };
         }
         employeeResponses[formatName(`response@${item.employee.orgName}`)].responses[
-          `question_${item.question.question_id}`
+          `question_${item.question.question_number}`
         ] = item.option.option_number;
       }
     });

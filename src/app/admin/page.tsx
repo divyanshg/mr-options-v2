@@ -87,18 +87,19 @@ const Page: FC<pageProps> = ({}) => {
   const handleSurveyChange = (surveyName: string) => {
     setSelectedResponse("");
     switch (surveyName) {
-      case "School of Leadership and Management":
+      case "School of Leadership and Management".toLowerCase():
         setSurveyType("TA");
         break;
-      case "Fundamental Interpersonal Relations Orientation-Behavior (FIRO-B)":
+      case "Fundamental Interpersonal Relations Orientation-Behavior (FIRO-B)".toLowerCase():
         setSurveyType("FR");
         break;
-      case "Discovering Your Work Type":
+      case "Discovering Your Work Type".toLowerCase():
         setSurveyType("WT");
         break;
       default:
         break;
     }
+    console.log({ surveyName });
     setValue(surveyName);
   };
 
