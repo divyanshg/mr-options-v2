@@ -99,7 +99,6 @@ const Page: FC<pageProps> = ({}) => {
       default:
         break;
     }
-    console.log({ surveyName });
     setValue(surveyName);
   };
 

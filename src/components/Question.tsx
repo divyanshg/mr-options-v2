@@ -36,10 +36,10 @@ const Question = ({
             <label className="flex flex-row items-center justify-start space-x-2">
               <Input
                 type="radio"
-                name={`question_${question.question_id}`}
+                name={`question_${question.question_number}`}
                 value={option.option_number}
                 className="w-6 h-6"
-                {...register(`question_${question.question_id}`, {
+                {...register(`question_${question.question_number}`, {
                   required: `Question ${question.question_number} is required`,
                 })}
               />
