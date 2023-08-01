@@ -31,12 +31,14 @@ export async function POST(req: Request) {
       if (body.user.type === "student") {
         responseData["student_id"] = body.user.id;
       } else if (body.user.type === "employee") {
-        let employee = await (db.employee as any).create({
-          name: body.user.name,
-          age: body.user.age,
-          workExperience: body.user.workExperience,
-          orgName: body.user.orgName,
-          gender: body.user.gender,
+        let employee = await(db.employee as any).create({
+          data: {
+            name: body.user.name,
+            age: Number(body.user.age),
+            workExperience: body.user.workExperience,
+            orgName: body.user.orgName,
+            gender: body.user.gender,
+          },
         });
         responseData["employee_id"] = employee.id;
       }

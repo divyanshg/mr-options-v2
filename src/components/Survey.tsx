@@ -35,6 +35,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
   const { mutate: saveResponses } = useMutation({
     mutationFn: async (data: any) => {
       const payload = data;
+      console.log(payload);
       return axios.post("/api/survey/responses/new", payload);
     },
     onError: (e) => {
