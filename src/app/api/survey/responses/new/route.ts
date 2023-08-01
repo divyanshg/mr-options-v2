@@ -3,22 +3,6 @@ import { db } from '@/lib/db';
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    console.log(body);
-
-    /* format of incoming body
-    {
-      user: {
-        type: 'student',
-        name: 'Divyansh',
-        rollNumber: '1/20/FET/BCS/043',
-        branch: 'B.Tech CSE',
-        semester: '1',
-        id: 'clkpavhpp0000pe4s5jqio2zx'
-      },
-      survey_id: 'transactional_analysis',
-      responses: [ { id: '1', response: '2' }, { id: '2', response: '3' } ]
-    }
-  */
 
     if (body.user.type === "student") {
       for (const responseItem of body.responses) {

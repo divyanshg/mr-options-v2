@@ -47,46 +47,6 @@ const markings: Record<string, number> = {
 };
 
 const TAResults: FC<TAResultsProps> = ({ data }) => {
-//   const data = [
-//     {
-//       question_1: 3,
-//       question_2: 2,
-//       question_3: 1,
-//       question_4: 3,
-//       question_5: 2,
-//       question_6: 2,
-//       question_7: 5,
-//       question_8: 4,
-//       question_9: 2,
-//       question_10: 4,
-//       question_11: 1,
-//       question_12: 4,
-//       question_13: 5,
-//       question_14: 3,
-//       question_15: 5,
-//       question_16: 3,
-//       question_17: 2,
-//       question_18: 4,
-//       question_19: 1,
-//       question_20: 5,
-//       question_21: 3,
-//       question_22: 2,
-//       question_23: 2,
-//       question_24: 1,
-//       question_25: 4,
-//       question_26: 2,
-//       question_27: 2,
-//       question_28: 3,
-//       question_29: 4,
-//       question_30: 5,
-//       question_31: 2,
-//       question_32: 2,
-//       question_33: 2,
-//       question_34: 5,
-//       question_35: 1,
-//       question_36: 1,
-//     },
-//   ];
   const calculateTotalCount = (optionNum: number) => {
     let totalCount = 0;
     Array.from({ length: 36 }, (_, index) => index + 1).map((questionNum) => {

@@ -29,7 +29,22 @@ const Page: FC<pageProps> = ({}) => {
 
   const [responses, setResponses] = useState<any>();
   const [selectedResponse, setSelectedResponse] = useState<any>("");
+  const [surveyType, setSurveyType] = useState<"TA" | "FR" | "WT">("TA");
+  const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [type, setType] = useState<"student" | "employee">("student");
+
+  const handleAdminLogin = () => {
+    const adminPassword = "yourAdminPassword"; // Replace this with your actual admin password
+
+    const inputPassword = prompt("Enter Admin Password:");
+    if (inputPassword === adminPassword) {
+      setLoggedIn(true);
+    } else {
+      alert("Invalid password. Please try again.");
+    }
+  };
+
+  useEffect(() => handleAdminLogin(), []);
 
   const { toast } = useToast();
 
@@ -59,12 +74,31 @@ const Page: FC<pageProps> = ({}) => {
           description: "No responses were found for this survey.",
         });
       }
-      console.log(data);
       setResponses(data);
     };
 
-    if (value && value.length > 0) get();
+    if (value && value.length > 0 && loggedIn) get();
   }, [value]);
+
+  const handleSurveyChange = async (surveyName: string) => {
+    setSelectedResponse("");
+    switch (surveyName) {
+      case "School of Leadership and Management":
+        setSurveyType("TA");
+        break;
+      case "Fundamental Interpersonal Relations Orientation-Behavior (FIRO-B)":
+        setSurveyType("FR");
+        break;
+      case "Discovering Your Work Type":
+        setSurveyType("WT");
+        break;
+      default:
+        break;
+    }
+    setValue(surveyName);
+  };
+
+  if (!loggedIn) return <div>Logging in...</div>;
 
   return (
     <div>
@@ -73,7 +107,7 @@ const Page: FC<pageProps> = ({}) => {
           open={sopen}
           setOpen={setsOpen}
           value={value}
-          setValue={setValue}
+          setValue={handleSurveyChange}
           surveys={surveys ?? []}
         />
         <select
@@ -131,7 +165,7 @@ const Page: FC<pageProps> = ({}) => {
                 ?.employee_details,
               type: "employee",
             }}
-            type="TA"
+            type={surveyType}
             responses={responses.employee_responses[selectedResponse].responses}
           />
         )}
