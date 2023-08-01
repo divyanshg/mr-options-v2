@@ -46,6 +46,10 @@ const Page: FC<pageProps> = ({}) => {
 
   useEffect(() => handleAdminLogin(), []);
 
+  // useEffect(() => {
+  //   console.log({selectedResponse});
+  // }, [selectedResponse]);
+
   const { toast } = useToast();
 
   const { data, isFetching, isLoading } = useQuery(["surveys"], async () => {
@@ -152,7 +156,7 @@ const Page: FC<pageProps> = ({}) => {
             type="TA"
             responses={
               responses.student_responses[selectedResponse.toUpperCase()]
-                .responses
+                ?.responses
             }
           />
         )}
@@ -166,7 +170,9 @@ const Page: FC<pageProps> = ({}) => {
               type: "employee",
             }}
             type={surveyType}
-            responses={responses.employee_responses[selectedResponse].responses}
+            responses={
+              responses.employee_responses[selectedResponse]?.responses
+            }
           />
         )}
     </div>

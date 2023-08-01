@@ -84,14 +84,18 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
   }, [errors]);
 
   const onSubmit = async (data: any) => {
-    if (type === "student") verifyUser(data);
+    const _payload = {
+      ...data,
+      rollNumber: data.rollNumber.toUpperCase(),
+    };
+    if (type === "student") verifyUser(_payload);
     else {
       setIsLoading(false);
       userDispatch({
         type: "SET_USER",
         payload: {
           type,
-          ...data,
+          ..._payload,
         },
       });
     }

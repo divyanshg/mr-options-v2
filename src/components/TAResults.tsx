@@ -84,7 +84,7 @@ const TAResults: FC<TAResultsProps> = ({ data }) => {
                   <td key={optionNum} className="p-2 border">
                     {data.map((student: any) => (
                       <span
-                        key={student.RollNumber}
+                        key={student?.RollNumber}
                         className={
                           markings[`question_${questionNum}`] === optionNum
                             ? "font-bold"

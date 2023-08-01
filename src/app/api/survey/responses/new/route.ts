@@ -18,8 +18,6 @@ export async function POST(req: Request) {
     const body = await req.json();
     const responsesData: ResponseItem[] = []; // Initialize as an empty array
 
-    console.log(body);
-
     for (const responseItem of body.responses) {
       const questionId = responseItem.id; // No need for parseInt, it's already a number
       const responseValue = responseItem.response; // No need for parseInt, it's already a number
