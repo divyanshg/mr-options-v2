@@ -28,6 +28,7 @@ const Tr = ({
 );
 
 const FRResults: FC<FRResultsProps> = ({ responses }) => {
+  console.log(responses);
   function getQuestionSet(questionNumbers: number[]) {
     const result: { [key: string]: any } = {};
 
@@ -40,43 +41,10 @@ const FRResults: FC<FRResultsProps> = ({ responses }) => {
 
     return result;
   }
+
   return (
     <div>
       <table>
-        {/* <thead>
-          <tr className="flex flex-row space-x-4 w-[160px]">
-            <td className="text-center">
-              Expressed
-              <br />
-              Inclusion
-            </td>
-            <td className="w-[160px] text-center">
-              Expressed
-              <br />
-              Inclusion
-            </td>
-            <td className="w-[160px] text-center">
-              Expressed
-              <br />
-              Inclusion
-            </td>
-            <td className="w-[160px] text-center">
-              Expressed
-              <br />
-              Inclusion
-            </td>
-            <td className="w-[160px] text-center">
-              Expressed
-              <br />
-              Inclusion
-            </td>
-            <td className="w-[160px] text-center">
-              Expressed
-              <br />
-              Inclusion
-            </td>
-          </tr>
-        </thead> */}
         <thead className="flex flex-row space-x-6 border-t border-b border-black">
           <tr className="flex flex-row space-x-4 w-[160px]">
             <td className="w-[80px] text-center">Item</td>

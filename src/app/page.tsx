@@ -4,8 +4,6 @@ import Survey from '@/components/Survey';
 import UserForm from '@/components/UserForm';
 import useUser from '@/hooks/useUser';
 
-import FRResults from '../components/FRResults';
-
 // const responses = {
 //   question_1: 1,
 //   question_2: 2,

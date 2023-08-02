@@ -68,7 +68,7 @@ export function calculateScores(responses: any) {
       ?.split("-")
       .map(Number);
 
-    if (responsesPossible?.includes(responses[question])) {
+    if (responsesPossible?.includes(Number(responses[question]))) {
       score++;
     }
   });
