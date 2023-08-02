@@ -48,7 +48,6 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
   const { mutate: saveResponses } = useMutation({
     mutationFn: async (data: any) => {
       const payload = await modify(data);
-      console.log(payload);
       return axios.post("/api/survey/responses/new", payload);
     },
     onError: (e) => {
@@ -129,8 +128,8 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     setIsLoading(true);
     setResponses(data);
 
-    /*convet data from the format {question_id: response} to {
-      id: question_id,
+    /*convet data from the format {question_number: response} to {
+      id: question_number,
       response: response
     }*/
 

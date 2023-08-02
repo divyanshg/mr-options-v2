@@ -61,10 +61,14 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
             <p>{question.split("_")[1]}</p>
           </Box>
           <Box>
-            <p className="text-center">{correctAnswer === 1 ? "✅" : ""}</p>
+            <p className="text-center">
+              {parseInt(correctAnswer as unknown as string) === 1 ? "✅" : ""}
+            </p>
           </Box>
           <Box>
-            <p className="text-center">{correctAnswer === 2 ? "✅" : ""}</p>
+            <p className="text-center">
+              {parseInt(correctAnswer as unknown as string) === 2 ? "✅" : ""}
+            </p>
           </Box>
         </div>
       </td>
