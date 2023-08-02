@@ -22,8 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Header />
-        <Manager>{children}</Manager>
-        <Toaster />
+        <div className="overflow-auto">
+          <Manager>{children}</Manager>
+          <Toaster />
+        </div>
       </body>
     </html>
   );

@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 const Header = ({}) => {
   return (
-    <nav className="py-4 border-b border-gray-200 navbar navbar-expand-lg navbar-light bg-light h-fit">
+    <nav className="w-full py-4 border-b border-gray-200 navbar-light bg-light h-fit">
       <div className="container">
         <div className="flex flex-col items-center justify-center w-full">
           <Image

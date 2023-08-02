@@ -62,7 +62,7 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
       >
         <div className="flex flex-row space-x-2">
           <Box>
-            <p>{question.split("_")[1]}</p>
+            <p className="text-lg font-bold">{question.split("_")[1]}</p>
           </Box>
           <Box>
             <p className="text-center">
@@ -124,7 +124,7 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
   };
 
   return (
-    <div className="flex flex-row justify-center px-4 ml-[600px] ">
+    <div className="flex flex-row justify-center px-4 ml-[600px] lg:ml-0">
       <table>
         <thead>
           <tr className="flex flex-row mb-4 space-x-8">
@@ -189,12 +189,12 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
               >
                 <Box noBorder />
                 <Box>
-                  <p>
+                  <p className="text-lg font-bold">
                     {calculateOccurencesInRow(transposedArray[set - 1])[1] ?? 0}
                   </p>
                 </Box>
                 <Box>
-                  <p>
+                  <p className="text-lg font-bold">
                     {calculateOccurencesInRow(transposedArray[set - 1])[2] ?? 0}
                   </p>
                 </Box>
@@ -209,10 +209,10 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
               >
                 <Box noBorder />
                 <Box noBorder>
-                  <p>{bottoms[set - 1][0]}</p>
+                  <p className="font-bold">{bottoms[set - 1][0]}</p>
                 </Box>
                 <Box noBorder>
-                  <p>{bottoms[set - 1][1]}</p>
+                  <p className="font-bold">{bottoms[set - 1][1]}</p>
                 </Box>
               </td>
             ))}
@@ -225,7 +225,7 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
               >
                 <Box noBorder />
                 <Box fullWidth>
-                  <p>
+                  <p className="text-lg font-bold">
                     {getMax(
                       calculateOccurencesInRow(transposedArray[set - 1])[1],
                       calculateOccurencesInRow(transposedArray[set - 1])[2]

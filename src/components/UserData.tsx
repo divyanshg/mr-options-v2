@@ -34,7 +34,7 @@ function convertTimestampToDate(timestamp?: string) {
 
 const UserData: FC<UserState> = (user) => {
   return (
-    <div className="p-4 border border-gray-200 rounded-lg">
+    <div className="p-4 border border-gray-200 rounded-lg ">
       {user.type === "student" ? (
         <div>
           <div className="px-4 sm:px-0">
