@@ -124,7 +124,7 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
   };
 
   return (
-    <div className="flex flex-row justify-center">
+    <div className="flex flex-row justify-center px-4 ml-[600px] ">
       <table>
         <thead>
           <tr className="flex flex-row mb-4 space-x-8">
