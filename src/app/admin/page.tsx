@@ -90,7 +90,7 @@ const Page: FC<pageProps> = ({}) => {
       case "Transactional Analysis".toLowerCase():
         setSurveyType("TA");
         break;
-      case "Fundamental Interpersonal Relations Orientation-Behavior (FIRO-B)".toLowerCase():
+      case "Interpersonal Relation".toLowerCase():
         setSurveyType("FR");
         break;
       case "Discovering Your Work Type".toLowerCase():

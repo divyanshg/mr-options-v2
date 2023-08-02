@@ -26,15 +26,19 @@ function divideArrayIntoSetsOfFour(responses: any) {
 const Box = ({
   children,
   noBorder = false,
+  fullWidth = false,
 }: {
   children?: any;
   noBorder?: boolean;
+  fullWidth?: boolean;
 }) => {
   return (
     <div
       className={`p-2 ${
         !noBorder ? "border-2 border-gray-400" : ""
-      } h-[50px] w-[80px] flex flex-row items-center justify-center rounded-lg`}
+      } h-[50px] w-[${
+        fullWidth ? "160px" : "80px"
+      }] flex flex-row items-center justify-center rounded-lg`}
     >
       {children}
     </div>
@@ -105,6 +109,18 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
     }, {});
 
     return occurences;
+  };
+
+  const bottoms = [
+    ["E", "I"],
+    ["S", "N"],
+    ["T", "F"],
+    ["J", "P"],
+  ];
+
+  const getMax = (v1: number, v2: number) => {
+    const max = Math.max(v1, v2);
+    return max === v1 ? 1 : 2;
   };
 
   return (
@@ -185,18 +201,38 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
               </td>
             ))}
           </tr>
-          <tr className="flex flex-row mb-4 space-x-8">
+          <tr className="flex flex-row space-x-8">
+            {[1, 2, 3, 4].map((set) => (
+              <td
+                key={set}
+                className="flex flex-row items-center justify-center space-x-2"
+              >
+                <Box noBorder />
+                <Box noBorder>
+                  <p>{bottoms[set - 1][0]}</p>
+                </Box>
+                <Box noBorder>
+                  <p>{bottoms[set - 1][1]}</p>
+                </Box>
+              </td>
+            ))}
+          </tr>
+          <tr className="flex flex-row mb-4 space-x-10">
             {[1, 2, 3, 4].map((set) => (
               <td
                 key={set}
                 className="flex flex-row items-center justify-center mb-4 space-x-2"
               >
                 <Box noBorder />
-                <Box noBorder>
-                  <p>A</p>
-                </Box>
-                <Box noBorder>
-                  <p>B</p>
+                <Box fullWidth>
+                  <p>
+                    {getMax(
+                      calculateOccurencesInRow(transposedArray[set - 1])[1],
+                      calculateOccurencesInRow(transposedArray[set - 1])[2]
+                    ) === 1
+                      ? bottoms[set - 1][0]
+                      : bottoms[set - 1][1]}
+                  </p>
                 </Box>
               </td>
             ))}
