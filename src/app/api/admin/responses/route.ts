@@ -41,7 +41,9 @@ export async function GET(req: Request) {
         //     : "employee_index",
         // };
 
-        employeesWithIndex.push(formatName(`response@${item.employee.orgName}`));
+        employeesWithIndex.push(
+          formatName(`response@${item.employee.orgName}`)
+        );
       }
     });
 
@@ -51,7 +53,7 @@ export async function GET(req: Request) {
       if (item.student) {
         if (!studentResponses[item.student.rollNumber]) {
           studentResponses[item.student.rollNumber] = {
-            student_details: item.student,
+            student_details: { ...item.student, createdAt: item.createdAt },
             responses: {},
           };
         }
@@ -65,15 +67,18 @@ export async function GET(req: Request) {
 
     unformattedResponses.forEach((item: any) => {
       if (item.employee) {
-        if (!employeeResponses[formatName(`response@${item.employee.orgName}`)]) {
+        if (
+          !employeeResponses[formatName(`response@${item.employee.orgName}`)]
+        ) {
           employeeResponses[formatName(`response@${item.employee.orgName}`)] = {
-            employee_details: item.employee,
+            employee_details: { ...item.employee, createdAt: item.createdAt },
             responses: {},
           };
         }
-        employeeResponses[formatName(`response@${item.employee.orgName}`)].responses[
-          `question_${item.question.question_number}`
-        ] = item.option.option_number;
+        employeeResponses[
+          formatName(`response@${item.employee.orgName}`)
+        ].responses[`question_${item.question.question_number}`] =
+          item.option.option_number;
       }
     });
 

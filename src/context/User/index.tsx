@@ -17,6 +17,7 @@ type Student = {
   rollNumber: string;
   branch: string;
   semester: string;
+  createdAt?: string;
 };
 
 type Employee = {
@@ -25,6 +26,7 @@ type Employee = {
   workExperience: number;
   orgName: string;
   gender: "Male" | "Female";
+  createdAt?: string;
 };
 
 type Context = {

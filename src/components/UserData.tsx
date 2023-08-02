@@ -24,6 +24,14 @@ function getHumanReadableDateTime() {
   return humanReadableDateTime;
 }
 
+function convertTimestampToDate(timestamp?: string) {
+  if (!timestamp) return getHumanReadableDateTime();
+  const date = new Date(timestamp);
+  const humanReadableTime = date.toLocaleString();
+
+  return humanReadableTime;
+}
+
 const UserData: FC<UserState> = (user) => {
   return (
     <div className="p-4 border border-gray-200 rounded-lg">
@@ -76,7 +84,7 @@ const UserData: FC<UserState> = (user) => {
                   Submited At
                 </dt>
                 <dd className="mt-1 font-bold leading-6 text-gray-700 text-md sm:col-span-2 sm:mt-0">
-                  {user.submittedAt ?? getHumanReadableDateTime()}
+                  {convertTimestampToDate(user.createdAt)}
                 </dd>
               </div>
             </dl>
@@ -139,7 +147,7 @@ const UserData: FC<UserState> = (user) => {
                   Submited At
                 </dt>
                 <dd className="mt-1 font-bold leading-6 text-gray-700 text-md sm:col-span-2 sm:mt-0">
-                  {user.submittedAt ?? getHumanReadableDateTime()}
+                  {convertTimestampToDate(user.createdAt)}
                 </dd>
               </div>
             </dl>
