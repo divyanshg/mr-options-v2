@@ -171,7 +171,7 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
       >
         {/* name */}
         <div className="flex flex-col mb-4 space-y-2">
-          <label htmlFor="name">Name</label>
+          <label htmlFor="name">Full Name</label>
           <Input
             type="text"
             id="name"

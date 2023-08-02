@@ -30,19 +30,8 @@ export async function GET(req: Request) {
       }
 
       if (item.employee) {
-        // Check if the 'name' field exists in the employee object
-        const hasEmployeeName = "name" in item.employee;
-
-        // Create a new object with the 'employee_index' field added
-        // const employeeWithIndex = {
-        //   ...item.employee,
-        //   employee_index: hasEmployeeName
-        //     ? item.employee.name
-        //     : "employee_index",
-        // };
-
         employeesWithIndex.push(
-          formatName(`response@${item.employee.orgName}`)
+          formatName(`${item.employee.name}@${item.employee.orgName}`)
         );
       }
     });
@@ -68,15 +57,19 @@ export async function GET(req: Request) {
     unformattedResponses.forEach((item: any) => {
       if (item.employee) {
         if (
-          !employeeResponses[formatName(`response@${item.employee.orgName}`)]
+          !employeeResponses[
+            formatName(`${item.employee.name}@${item.employee.orgName}`)
+          ]
         ) {
-          employeeResponses[formatName(`response@${item.employee.orgName}`)] = {
+          employeeResponses[
+            formatName(`${item.employee.name}@${item.employee.orgName}`)
+          ] = {
             employee_details: { ...item.employee, createdAt: item.createdAt },
             responses: {},
           };
         }
         employeeResponses[
-          formatName(`response@${item.employee.orgName}`)
+          formatName(`${item.employee.name}@${item.employee.orgName}`)
         ].responses[`question_${item.question.question_number}`] =
           item.option.option_number;
       }
@@ -95,6 +88,7 @@ export async function GET(req: Request) {
       },
     });
   } catch (err) {
+    console.log(err);
     return new Response(JSON.stringify({ error: "Something went wrong" }), {
       status: 500,
     });

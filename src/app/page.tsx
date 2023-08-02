@@ -4,6 +4,8 @@ import Survey from '@/components/Survey';
 import UserForm from '@/components/UserForm';
 import useUser from '@/hooks/useUser';
 
+import SurveySelector from '../components/SurveySelector';
+
 // const responses = {
 //   question_1: 1,
 //   question_2: 2,
@@ -162,7 +164,12 @@ export default function Home() {
 
   return (
     <main className="lg:p-24 min-h-fit">
-      {user.type !== "student" ? <UserForm type="student" /> : <Survey />}
+      {user.type !== "employee" ? (
+        <UserForm type="employee" />
+      ) : (
+        <SurveySelector />
+      )}
+      {/* {user.type !== "student" ? <UserForm type="student" /> : <Survey />} */}
     </main>
   );
 }
