@@ -138,7 +138,7 @@ const FRResults: FC<FRResultsProps> = ({ responses }) => {
             <td className="w-12 h-12 text-center border border-black">I</td>
             <td className="w-12 h-12 text-center border border-black">C</td>
             <td className="w-12 h-12 text-center border border-black">A</td>
-            <td className="w-12 h-12 text-center border border-black">SUM</td>
+            <td className="w-12 h-12 text-center border border-black">Total</td>
           </tr>
         </thead>
         <tbody>
@@ -177,7 +177,7 @@ const FRResults: FC<FRResultsProps> = ({ responses }) => {
             </td>
           </tr>
           <tr>
-            <td className="w-12 h-12 text-center border border-black">SUM</td>
+            <td className="w-12 h-12 text-center border border-black">Total</td>
             <td className="w-12 h-12 text-center border border-black">
               {calculateScores(sets[1]) + calculateScores(sets[4])}
             </td>
