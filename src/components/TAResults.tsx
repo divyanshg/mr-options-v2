@@ -5,7 +5,7 @@ interface TAResultsProps {
   sums: Record<string, number>;
 }
 
-const data = [
+const _data = [
         {
             "3": 3
         },
@@ -116,7 +116,7 @@ const data = [
         }
     ]
 
-const sums = {
+const _sums = {
         "C": 15,
         "F": 18,
         "A": 13,
@@ -125,7 +125,7 @@ const sums = {
         "B": 16
     }
 
-const TAResults: FC = () => {
+const TAResults: FC = ({data}: {data: any[]}) => {
   const letters = ["A", "B", "C", "D", "E", "F"];
 
   return (
@@ -142,7 +142,7 @@ const TAResults: FC = () => {
           </tr>
         </thead>
         <tbody>
-          {Object.entries(sums).map(([key, sum]) => (
+          {Object.entries(_sums).map(([key, sum]) => (
             <tr key={key} className="text-center">
               <td className="p-2 border">{key}</td>
               {letters.map((letter) => (
