@@ -1,6 +1,7 @@
 import '@/styles/globals.css';
 
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 
 import Header from '@/components/Header';
 import { Toaster } from '@/components/ui/Toaster';
@@ -20,6 +21,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          type="text/javascript"
+          src="http://localhost/journey.js"
+          async
+        />
+      </head>
       <body className={inter.className}>
         <Header />
         <div className="overflow-auto">

@@ -1,4 +1,8 @@
+import axios from 'axios';
 
+import { useMutation } from '@tanstack/react-query';
+
+import { useToast } from '../hooks/use-toast';
 import { Input } from './ui/Input';
 
 interface QuestionProps {
@@ -18,11 +22,48 @@ interface Option {
 
 const Question = ({
   question,
-  register,
+  surveyId,
+  checkedOption,
 }: {
   question: QuestionProps;
-  register: any;
+  surveyId: string;
+  checkedOption?: number;
 }) => {
+  const { toast } = useToast();
+  const _user = localStorage.getItem("user");
+
+  let user: any;
+
+  if (_user) {
+    user = JSON.parse(_user);
+  }
+
+  const { mutate: saveResponse } = useMutation({
+    mutationFn: async (data: any) => {
+      return axios.post("http://localhost:4000/api/response/record", data);
+    },
+    onError: (e) => {
+      console.log(e);
+      toast({
+        title: "Error",
+        description: "Something went wrong while saving your responses.",
+        variant: "destructive",
+        duration: 5000,
+      });
+    },
+  });
+
+  async function handleoptionChange(event: any) {
+    const data = {
+      surveyId,
+      questionId: event.target.name,
+      optionId: event.target.value,
+      userId: user?.id,
+    };
+
+    await saveResponse(data);
+  }
+
   return (
     <div className="w-full p-4 border border-gray-200 rounded-lg">
       <div className="flex flex-row space-x-1">
@@ -36,14 +77,17 @@ const Question = ({
             <label className="flex flex-row items-center justify-start space-x-2">
               <Input
                 type="radio"
-                name={`question_${question.question_number}`}
-                value={option.option_number}
+                name={`question_${question.question_id}`}
+                value={option.option_id}
                 className="w-6 h-6"
-                {...register(`question_${question.question_number}`, {
-                  required: `Question ${question.question_number} is required`,
-                })}
+                onChange={handleoptionChange}
+                {...(checkedOption != 0 || checkedOption != undefined
+                  ? { checked: checkedOption === option.option_id }
+                  : {})}
               />
-              <span>{option.option_text}</span>
+              <span>
+                {option.option_text} {checkedOption}
+              </span>
             </label>
           </li>
         ))}

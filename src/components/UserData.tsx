@@ -32,7 +32,7 @@ function convertTimestampToDate(timestamp?: string) {
   return humanReadableTime;
 }
 
-const UserData: FC<UserState> = (user) => {
+const UserData: FC<UserState> = (user, submittedAt) => {
   return (
     <div className="p-4 border border-gray-200 rounded-lg ">
       {user.type === "student" ? (
@@ -84,7 +84,7 @@ const UserData: FC<UserState> = (user) => {
                   Submited At
                 </dt>
                 <dd className="mt-1 font-bold leading-6 text-gray-700 text-md sm:col-span-2 sm:mt-0">
-                  {convertTimestampToDate(user.createdAt)}
+                  {convertTimestampToDate(user.submittedAt)}
                 </dd>
               </div>
             </dl>
@@ -147,7 +147,7 @@ const UserData: FC<UserState> = (user) => {
                   Submited At
                 </dt>
                 <dd className="mt-1 font-bold leading-6 text-gray-700 text-md sm:col-span-2 sm:mt-0">
-                  {convertTimestampToDate(user.createdAt)}
+                  {convertTimestampToDate(user.submittedAt)}
                 </dd>
               </div>
             </dl>

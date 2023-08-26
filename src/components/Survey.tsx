@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import useUser from '@/hooks/useUser';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 import { useToast } from '../hooks/use-toast';
 import { modify } from '../lib/responseModifier';
@@ -16,23 +16,34 @@ interface StudentSurveyProps {
   id?: string;
 }
 
+const getSurveyShortCode = (surveyName: string) => {
+  switch (surveyName) {
+    case "transactional_analysis":
+      return "TA";
+    case "FIRO-B":
+      return "FR";
+    case "discovering_work_type":
+      return "WT";
+    default:
+      return "TA";
+  }
+};
+
 const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
+  const { toast } = useToast();
+  const { user } = useUser();
+
   const fetchSurvey = async () => {
-    const { data } = await axios.get(`/api/survey?surveyId=${id}`);
+    const { data } = await axios.get(`http://localhost:4000/api/survey/${id}`);
     return data;
   };
 
-  const getSurveyShortCode = (surveyName: string) => {
-    switch (surveyName) {
-      case "transactional_analysis":
-        return "TA";
-      case "FIRO-B":
-        return "FR";
-      case "discovering_work_type":
-        return "WT";
-      default:
-        return "TA";
-    }
+  const fetchExistingResponses = async () => {
+    if (!user) return;
+    const { data } = await axios.get(
+      `http://localhost:4000/api/response/existsing?userId=${user.id}&surveyId=${id}`
+    );
+    return data as Record<string, any>[];
   };
 
   const {
@@ -40,7 +51,20 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     error,
     isFetching,
     isLoading,
-  } = useQuery(["survey"], fetchSurvey);
+  } = useQuery(["survey", id], fetchSurvey, {
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+  });
+
+  const {
+    data: existingResponses,
+    error: existingResponsesError,
+    isFetching: existingResponsesIsFetching,
+    isLoading: existingResponsesIsLoading,
+  } = useQuery(["existing_responses", id], fetchExistingResponses, {
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+  });
 
   const [submitted, setSubmitted] = useState<boolean>(false);
   const [responses, setResponses] = useState<any>({});
@@ -69,9 +93,6 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
       setSubmitted(true);
     },
   });
-
-  const { toast } = useToast();
-  const { user } = useUser();
 
   const [isBtnLoading, setIsLoading] = useState<boolean>(false);
 
@@ -140,7 +161,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
 
     saveResponses({
       user,
-      survey_id: survey.id,
+      survey_id: survey?.id,
       responses,
     });
   }
@@ -151,8 +172,16 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
         type={getSurveyShortCode(id)}
         responses={responses}
         user={user}
+        submittedAt={new Date().toISOString()}
       />
     );
+
+  const getSelectedOption = (questionId: number) => {
+    if (!existingResponses) return 0;
+    return existingResponses?.find(
+      (response) => response.question_id === questionId
+    )?.option_id;
+  };
 
   if (survey) {
     return (
@@ -161,7 +190,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
           <h1 className="text-xl font-semibold text-center">{survey.title}</h1>
           <p className="px-3 mx-3">{survey.description}</p>
         </div>
-        <form id="questions-form" onSubmit={handleSubmit(onSubmit)}>
+        <div id="questions-form">
           <div className="flex flex-col p-4 mx-2 space-y-2">
             {survey.questions
               .sort((a: any, b: any) => a.question_number - b.question_number) // Assuming question_id is a numeric property
@@ -169,16 +198,19 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
                 <Question
                   key={question.question_id}
                   question={question}
-                  register={register}
+                  surveyId={survey.id}
+                  checkedOption={
+                    getSelectedOption(question.question_id) || undefined
+                  }
                 />
               ))}
           </div>
           <div className="flex flex-col p-4 py-2 mx-2 space-y-2">
-            <Button isLoading={isBtnLoading} type="submit">
+            <Button isLoading={isBtnLoading} type="button">
               Submit
             </Button>
           </div>
-        </form>
+        </div>
       </div>
     );
   }

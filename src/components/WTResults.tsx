@@ -5,24 +5,6 @@ interface WTResultsProps {
   responses: any;
 }
 
-function divideArrayIntoSetsOfFour(responses: any) {
-  const sortedResponses = Object.fromEntries(
-    Object.entries(responses).sort(([keyA], [keyB]) => {
-      const numA = parseInt(keyA.split("_")[1]);
-      const numB = parseInt(keyB.split("_")[1]);
-      return numA - numB;
-    })
-  );
-
-  const arr = Object.keys(sortedResponses);
-
-  const sets = [];
-  for (let i = 0; i < arr.length; i += 4) {
-    sets.push(arr.slice(i, i + 4));
-  }
-  return sets;
-}
-
 const Box = ({
   children,
   noBorder = false,
@@ -45,8 +27,17 @@ const Box = ({
   );
 };
 
-const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
-  if (!responses) return null;
+const WTResults: FC<WTResultsProps> = ({
+  responses: { counts, maxes, sets, responses },
+}: {
+  responses: {
+    counts: number[][];
+    maxes: number[];
+    sets: string[][];
+    responses: Record<string, number>[];
+  };
+}) => {
+  if (!sets || sets.length == 0) return null;
 
   function Td({
     question,
@@ -88,7 +79,7 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
               <Td
                 key={question}
                 question={question}
-                correctAnswer={responses[question]}
+                correctAnswer={Number(responses[question])}
               />
             );
           })}
@@ -97,31 +88,12 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
     });
   }
 
-  const sets = divideArrayIntoSetsOfFour(responses);
-  const transposedArray = sets[0].map((col, i) =>
-    sets.map((row: any) => responses[row[i]])
-  );
-
-  const calculateOccurencesInRow = (row: any) => {
-    const occurences = row.reduce((acc: any, curr: any) => {
-      acc[curr] ? acc[curr]++ : (acc[curr] = 1);
-      return acc;
-    }, {});
-
-    return occurences;
-  };
-
   const bottoms = [
     ["E", "I"],
     ["S", "N"],
     ["T", "F"],
     ["J", "P"],
   ];
-
-  const getMax = (v1: number, v2: number) => {
-    const max = Math.max(v1, v2);
-    return max === v1 ? 1 : 2;
-  };
 
   return (
     <div className="flex flex-row justify-center px-4 ml-[600px] lg:ml-0">
@@ -182,21 +154,17 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
             </td>
           </tr>
           <tr className="flex flex-row space-x-8">
-            {[1, 2, 3, 4].map((set) => (
+            {[1, 2, 3, 4].map((_, i) => (
               <td
-                key={set}
+                key={i}
                 className="flex flex-row items-center justify-center space-x-2"
               >
                 <Box noBorder />
                 <Box>
-                  <p className="text-lg font-bold">
-                    {calculateOccurencesInRow(transposedArray[set - 1])[1] ?? 0}
-                  </p>
+                  <p className="text-lg font-bold">{counts[i][0] ?? 0}</p>
                 </Box>
                 <Box>
-                  <p className="text-lg font-bold">
-                    {calculateOccurencesInRow(transposedArray[set - 1])[2] ?? 0}
-                  </p>
+                  <p className="text-lg font-bold">{counts[i][1] ?? 0}</p>
                 </Box>
               </td>
             ))}
@@ -218,21 +186,14 @@ const WTResults: FC<WTResultsProps> = ({ responses }: { responses: any }) => {
             ))}
           </tr>
           <tr className="flex flex-row mb-4 space-x-10">
-            {[1, 2, 3, 4].map((set) => (
+            {[1, 2, 3, 4].map((set, i) => (
               <td
                 key={set}
                 className="flex flex-row items-center justify-center mb-4 space-x-2"
               >
                 <Box noBorder />
                 <Box fullWidth>
-                  <p className="text-lg font-bold">
-                    {getMax(
-                      calculateOccurencesInRow(transposedArray[set - 1])[1],
-                      calculateOccurencesInRow(transposedArray[set - 1])[2]
-                    ) === 1
-                      ? bottoms[set - 1][0]
-                      : bottoms[set - 1][1]}
-                  </p>
+                  <p className="text-lg font-bold">{bottoms[i][maxes[i]]}</p>
                 </Box>
               </td>
             ))}

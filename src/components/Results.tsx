@@ -9,15 +9,16 @@ import WTResults from './WTResults';
 interface ResultsProps {
   type: "TA" | "FR" | "WT";
   responses: any;
-  user: UserState;
+  user?: UserState | any;
+  submittedAt: string;
 }
 
-const Results: FC<ResultsProps> = ({ type, responses, user }) => {
+const Results: FC<ResultsProps> = ({ type, responses, user, submittedAt }) => {
   return (
     <div>
-      <UserData {...user} />
+      {user ? <UserData {...user} {...{ submittedAt: submittedAt }} /> : null}
       <h1 className="mx-3 my-3 text-lg font-semibold">Results</h1>
-      {type === "TA" && <TAResults data={[responses]} />}
+      {type === "TA" && <TAResults responses={responses} />}
       {type === "FR" && <FRResults responses={responses} />}
       {type === "WT" && <WTResults responses={responses} />}
     </div>

@@ -19,6 +19,35 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
   const { dispatch: userDispatch } = useUser();
   const [newUser, setNewUser] = useState<any>({});
 
+  const token = localStorage.getItem("access_token");
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      const { data } = await axios.get(
+        "http://localhost:4000/api/user/verifyToken",
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      if (data) {
+        localStorage.setItem("user", JSON.stringify(data));
+        userDispatch({
+          type: "SET_USER",
+          payload: {
+            type,
+            ...data,
+          },
+        });
+      }
+    };
+    if (token) {
+      verifyToken();
+    }
+  }, []);
+
   const { mutate: verifyUser } = useMutation({
     mutationFn: async (data: any) => {
       setIsLoading(true);
@@ -27,7 +56,10 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
         type,
         ...data,
       };
-      const { data: resp } = await axios.post("/api/verifyUser", payload);
+      const { data: resp } = await axios.post(
+        "http://localhost:4000/api/user/verify",
+        payload
+      );
 
       return resp;
     },
@@ -39,29 +71,24 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
       });
     },
     onSuccess: (data: any) => {
-      switch (data.code) {
-        case "USER_EXISTS":
-          setIsLoading(false);
-          userDispatch({
-            type: "SET_USER",
-            payload: {
-              type,
-              ...newUser,
-              id: data.user?.id,
-            },
-          });
-          return;
-        case "RESPONSE_EXISTS":
-          setIsLoading(false);
-          return toast({
-            title: "Response already exists",
-            description: "Response already exists",
-            variant: "destructive",
-          });
-        default:
-          setIsLoading(false);
-          return;
-      }
+      const {
+        tokens: { access_token },
+        user,
+      } = data;
+
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("access_token", access_token);
+
+      console.log(user);
+
+      setIsLoading(false);
+      userDispatch({
+        type: "SET_USER",
+        payload: {
+          type,
+          ...user,
+        },
+      });
     },
   });
 
@@ -88,17 +115,7 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
       ...data,
       ...(data.rollNumber ? { rollNumber: data.rollNumber.toUpperCase() } : {}),
     };
-    if (type === "student") verifyUser(_payload);
-    else {
-      setIsLoading(false);
-      userDispatch({
-        type: "SET_USER",
-        payload: {
-          type,
-          ..._payload,
-        },
-      });
-    }
+    verifyUser(_payload);
   };
 
   return type === "student" ? (

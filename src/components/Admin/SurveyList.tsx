@@ -39,19 +39,19 @@ const SurveyList = ({
         <CommandGroup>
           {surveys?.map((survey: any) => (
             <CommandItem
-              key={survey.value}
+              key={survey.id}
               onSelect={(currentValue) => {
-                setValue(currentValue === value ? "" : currentValue);
+                setValue(currentValue === value ? "" : survey.id);
                 setOpen(false);
               }}
             >
               <Check
                 className={cn(
                   "mr-2 h-4 w-4",
-                  value === survey.value ? "opacity-100" : "opacity-0"
+                  value === survey.id ? "opacity-100" : "opacity-0"
                 )}
               />
-              {survey.label}
+              {survey.title}
             </CommandItem>
           ))}
         </CommandGroup>
