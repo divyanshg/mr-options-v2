@@ -1,11 +1,10 @@
-import { Check, ChevronsUpDown } from 'lucide-react';
+import { ChevronsUpDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
 import {
     Command, CommandEmpty, CommandGroup, CommandInput, CommandItem
 } from '@/components/ui/Command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/Popover';
-import { cn } from '@/lib/utils';
 
 const ResponseList = ({
   open,
@@ -22,7 +21,7 @@ const ResponseList = ({
   responses: any;
   userType: string;
 }) => {
-  const key = userType === "student" ? "rollNumber" : "orgName";
+  const key = userType === "student" ? "rollNumber" : "phoneNumber";
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
@@ -35,7 +34,7 @@ const ResponseList = ({
           {value
             ? userType === "student"
               ? value[key]
-              : `${value["name"]}@${value[key].replace("_", " ")}`
+              : `${value["name"]}@${value[key]}`
             : "Select response..."}
           <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
         </Button>

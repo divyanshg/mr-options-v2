@@ -233,6 +233,17 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
           />
         </div>
         <div className="flex flex-col mb-4 space-y-2">
+          <label htmlFor="phoneNumber">Phone Number</label>
+          <Input
+            type="number"
+            id="phoneNumber"
+            placeholder="Enter your Phone Number"
+            {...register("phoneNumber", {
+              required: "Phone Number is required",
+            })}
+          />
+        </div>
+        <div className="flex flex-col mb-4 space-y-2">
           <label htmlFor="gender">Your Gender</label>
           <select
             id="gender"

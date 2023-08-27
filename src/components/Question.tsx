@@ -59,6 +59,7 @@ const Question = ({
       questionId: event.target.name,
       optionId: event.target.value,
       userId: user?.id,
+      userType: user?.type,
     };
 
     await saveResponse(data);
@@ -81,13 +82,9 @@ const Question = ({
                 value={option.option_id}
                 className="w-6 h-6"
                 onChange={handleoptionChange}
-                {...(checkedOption != 0 || checkedOption != undefined
-                  ? { checked: checkedOption === option.option_id }
-                  : {})}
+                defaultChecked={option.option_id === checkedOption}
               />
-              <span>
-                {option.option_text} {checkedOption}
-              </span>
+              <span>{option.option_text}</span>
             </label>
           </li>
         ))}

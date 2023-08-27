@@ -33,6 +33,13 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
   const { toast } = useToast();
   const { user } = useUser();
 
+  const isGiven = async () => {
+    const { data } = await axios.get(
+      `http://localhost:4000/api/survey/given/${id}/${user?.type}/${user?.id}`
+    );
+    return data;
+  };
+
   const fetchSurvey = async () => {
     const { data } = await axios.get(`http://localhost:4000/api/survey/${id}`);
     return data;
@@ -45,6 +52,16 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     );
     return data as Record<string, any>[];
   };
+
+  const {
+    data: isGivenSurvey,
+    error: isGivenSurveyError,
+    isFetching: isGivenSurveyIsFetching,
+    isLoading: isGivenSurveyIsLoading,
+  } = useQuery(["isGiven", id], isGiven, {
+    keepPreviousData: true,
+    refetchOnWindowFocus: false,
+  });
 
   const {
     data: survey,
@@ -71,8 +88,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
 
   const { mutate: saveResponses } = useMutation({
     mutationFn: async (data: any) => {
-      const payload = await modify(data);
-      return axios.post("/api/survey/responses/new", payload);
+      return axios.post("http://localhost:4000/api/response/process", data);
     },
     onError: (e) => {
       console.log(e);
@@ -90,29 +106,11 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
         title: "Success",
         description: "Your responses have been recorded.",
       });
-      setSubmitted(true);
+      window.location.href = `/result/${user?.type}/${id}/${user?.id}`;
     },
   });
 
   const [isBtnLoading, setIsLoading] = useState<boolean>(false);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  useEffect(() => {
-    if (Object.keys(errors).length) {
-      for (const [_key, value] of Object.entries(errors)) {
-        toast({
-          title: "Something went wrong",
-          description: (value as { message: string }).message,
-          variant: "destructive",
-        });
-      }
-    }
-  }, [errors]);
 
   useEffect(() => {
     if (error) {
@@ -125,6 +123,13 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
       });
     }
   }, [error]);
+
+  if (isGivenSurvey?.given) {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user");
+    alert("You have already given this survey");
+    window.location.href = `/result/${user?.type}/${id}/${user?.id}`;
+  }
 
   if (isLoading || isFetching) {
     return (
@@ -145,36 +150,18 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     );
   }
 
-  async function onSubmit(data: any) {
+  async function onSubmit() {
     setIsLoading(true);
-    setResponses(data);
-
     /*convet data from the format {question_number: response} to {
       id: question_number,
       response: response
     }*/
-
-    const responses = Object.entries(data).map(([id, response]) => ({
-      id: id.split("_")[1],
-      response,
-    }));
-
     saveResponses({
-      user,
-      survey_id: survey?.id,
-      responses,
+      userId: user?.id,
+      surveyId: survey?.id,
+      userType: user?.type,
     });
   }
-
-  if (submitted)
-    return (
-      <Results
-        type={getSurveyShortCode(id)}
-        responses={responses}
-        user={user}
-        submittedAt={new Date().toISOString()}
-      />
-    );
 
   const getSelectedOption = (questionId: number) => {
     if (!existingResponses) return 0;
@@ -206,7 +193,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
               ))}
           </div>
           <div className="flex flex-col p-4 py-2 mx-2 space-y-2">
-            <Button isLoading={isBtnLoading} type="button">
+            <Button isLoading={isBtnLoading} onClick={onSubmit} type="button">
               Submit
             </Button>
           </div>
