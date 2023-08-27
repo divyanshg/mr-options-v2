@@ -1,15 +1,12 @@
 import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 
 import { Skeleton } from '@/components/ui/skeleton';
 import useUser from '@/hooks/useUser';
-import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 
 import { useToast } from '../hooks/use-toast';
-import { modify } from '../lib/responseModifier';
 import Question from './Question';
-import Results from './Results';
 import { Button } from './ui/Button';
 
 interface StudentSurveyProps {

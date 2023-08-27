@@ -21,13 +21,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <head>
-        <Script
-          type="text/javascript"
-          src="http://localhost/journey.js"
-          async
-        />
-      </head>
       <body className={inter.className}>
         <Header />
         <div className="overflow-auto">

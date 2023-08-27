@@ -13,7 +13,7 @@ const SurveySelector: FC<SurveySelectorProps> = ({}) => {
     isFetching,
     isLoading,
   } = useQuery(["surveys"], async () => {
-    const { data } = await axios.get("/api/survey/all");
+    const { data } = await axios.get("http://localhost:4000/api/survey");
     return data;
   });
 
