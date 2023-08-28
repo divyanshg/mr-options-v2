@@ -1,7 +1,7 @@
-import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
+import axios from '@/axios';
 import { useToast } from '@/hooks/use-toast';
 import useUser from '@/hooks/useUser';
 import { useMutation } from '@tanstack/react-query';
@@ -24,7 +24,7 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
   useEffect(() => {
     const verifyToken = async () => {
       const { data } = await axios.get(
-        "http://localhost:4000/api/user/verifyToken",
+        "/user/verifyToken",
         {
           headers: {
             Authorization: token,
@@ -56,7 +56,7 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
         ...data,
       };
       const { data: resp } = await axios.post(
-        "http://localhost:4000/api/user/verify",
+        "/user/verify",
         payload
       );
 

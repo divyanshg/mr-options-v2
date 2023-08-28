@@ -1,8 +1,8 @@
 "use client";
-import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
+import axios from '@/axios';
 import { useQuery } from '@tanstack/react-query';
 
 const ResponseList = dynamic(() => import("@/components/Admin/ResponseList"));
@@ -58,18 +58,22 @@ const Page = ({}) => {
   });
 
   const { data: surveys } = useQuery(["surveys"], async () => {
-    const { data } = await axios.get("http://localhost:4000/api/survey");
+    const { data } = await axios({
+      url: "/survey",
+      method: "GET",
+    });
     return data;
   });
 
   useEffect(() => {
     const fetch = async () => {
-      const { data } = await axios.get(
-        `http://localhost:4000/api/survey/${selectedSurvey.replace(
+      const { data } = await axios({
+        method: "GET",
+        url: `/survey/${selectedSurvey.replace(
           " ",
           "_"
-        )}/${selectedUserType}/responses`
-      );
+        )}/${selectedUserType}/responses`,
+      });
 
       if (data.length > 0) setSelectedResponse(data[0]);
       setAvailableResponses(data);
@@ -80,12 +84,13 @@ const Page = ({}) => {
 
   useEffect(() => {
     const fetch = async () => {
-      const { data } = await axios.get(
-        `http://localhost:4000/api/survey/${selectedSurvey.replace(
+      const { data } = await axios({
+        method: "GET",
+        url: `/survey/${selectedSurvey.replace(
           " ",
           "_"
-        )}/${selectedUserType}/responses/answers/${selectedResponse?.id}`
-      );
+        )}/${selectedUserType}/responses/answers/${selectedResponse?.id}`,
+      });
 
       setResponseWithAnswers(data);
     };

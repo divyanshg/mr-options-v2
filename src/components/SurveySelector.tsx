@@ -1,8 +1,8 @@
 "use client";
-import axios from 'axios';
 import Link from 'next/link';
 import { FC } from 'react';
 
+import axios from '@/axios';
 import { useQuery } from '@tanstack/react-query';
 
 interface SurveySelectorProps {}
@@ -13,7 +13,7 @@ const SurveySelector: FC<SurveySelectorProps> = ({}) => {
     isFetching,
     isLoading,
   } = useQuery(["surveys"], async () => {
-    const { data } = await axios.get("http://localhost:4000/api/survey");
+    const { data } = await axios.get("/survey");
     return data;
   });
 

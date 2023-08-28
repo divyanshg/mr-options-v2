@@ -1,6 +1,6 @@
-import axios from 'axios';
 import { FC, useEffect, useState } from 'react';
 
+import axios from '@/axios';
 import { Skeleton } from '@/components/ui/skeleton';
 import useUser from '@/hooks/useUser';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -19,20 +19,20 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
 
   const isGiven = async () => {
     const { data } = await axios.get(
-      `http://localhost:4000/api/survey/given/${id}/${user?.type}/${user?.id}`
+      `/survey/given/${id}/${user?.type}/${user?.id}`
     );
     return data;
   };
 
   const fetchSurvey = async () => {
-    const { data } = await axios.get(`http://localhost:4000/api/survey/${id}`);
+    const { data } = await axios.get(`/survey/${id}`);
     return data;
   };
 
   const fetchExistingResponses = async () => {
     if (!user) return;
     const { data } = await axios.get(
-      `http://localhost:4000/api/response/existsing?userId=${user.id}&surveyId=${id}`
+      `/response/existsing?userId=${user.id}&surveyId=${id}`
     );
     return data as Record<string, any>[];
   };
@@ -63,7 +63,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
 
   const { mutate: saveResponses } = useMutation({
     mutationFn: async (data: any) => {
-      return axios.post("http://localhost:4000/api/response/process", data);
+      return axios.post("/response/process", data);
     },
     onError: (e) => {
       console.log(e);

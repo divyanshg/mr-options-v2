@@ -1,5 +1,4 @@
-import axios from 'axios';
-
+import axios from '@/axios';
 import { useMutation } from '@tanstack/react-query';
 
 import { useToast } from '../hooks/use-toast';
@@ -40,7 +39,7 @@ const Question = ({
 
   const { mutate: saveResponse } = useMutation({
     mutationFn: async (data: any) => {
-      return axios.post("http://localhost:4000/api/response/record", data);
+      return axios.post("/response/record", data);
     },
     onError: (e) => {
       console.log(e);

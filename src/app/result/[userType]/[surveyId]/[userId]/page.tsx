@@ -1,7 +1,8 @@
 "use client";
-import axios from 'axios';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+
+import axios from '@/axios';
 
 const Results = dynamic(() => import("@/components/Results"));
 
@@ -60,7 +61,7 @@ const Page = ({ params }: pageProps) => {
   useEffect(() => {
     const fetch = async () => {
       const { data } = await axios.get(
-        `http://localhost:4000/api/survey/${params.surveyId}/${params.userType}/responses/answers/${params.userId}?sendUser=true`
+        `/survey/${params.surveyId}/${params.userType}/responses/answers/${params.userId}?sendUser=true`
       );
 
       console.log(data);
