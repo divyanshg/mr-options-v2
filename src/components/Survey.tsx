@@ -101,7 +101,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "discovering_work_type" }) => {
 
   if (isGivenSurvey?.given) {
     localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
+    // localStorage.removeItem("user");
     alert("You have already given this survey");
     window.location.href = `/result/${user?.type}/${id}/${user?.id}`;
   }

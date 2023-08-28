@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 
 import axios from '@/axios';
 
+import { getFromLocalStorage } from '../../../../../lib/utils';
+
 const Results = dynamic(() => import("@/components/Results"));
 
 interface pageProps {
@@ -57,6 +59,7 @@ const getSurveyType = (survey: string) => {
 
 const Page = ({ params }: pageProps) => {
   const [result, setResult] = useState<TA | FR | WT | null>(null);
+  const user = getFromLocalStorage("user", true);
 
   useEffect(() => {
     const fetch = async () => {
@@ -79,7 +82,7 @@ const Page = ({ params }: pageProps) => {
       {result ? (
         <Results
           user={{
-            ...result.user,
+            ...(result.user ?? user),
             type: params.userType,
           }}
           submittedAt={result.submittedAt}

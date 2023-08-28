@@ -33,6 +33,7 @@ function convertTimestampToDate(timestamp?: string) {
 }
 
 const UserData: FC<UserState> = (user, submittedAt) => {
+  console.log(user)
   return (
     <div className="p-4 border border-gray-200 rounded-lg ">
       {user.type === "student" ? (
