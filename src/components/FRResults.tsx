@@ -1,7 +1,5 @@
 import { FC } from 'react';
 
-import { calculateScores } from '../constants/firo';
-
 interface FRResultsProps {
   responses: any;
 }

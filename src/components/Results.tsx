@@ -1,10 +1,12 @@
+import dynamic from 'next/dynamic';
 import { FC } from 'react';
 
 import { UserState } from '../context/User';
-import FRResults from './FRResults';
-import TAResults from './TAResults';
-import UserData from './UserData';
-import WTResults from './WTResults';
+
+const FRResults = dynamic(() => import("@/components/FRResults"));
+const TAResults = dynamic(() => import("@/components/TAResults"));
+const UserData = dynamic(() => import("@/components/UserData"));
+const WTResults = dynamic(() => import("@/components/WTResults"));
 
 interface ResultsProps {
   type: "TA" | "FR" | "WT";
