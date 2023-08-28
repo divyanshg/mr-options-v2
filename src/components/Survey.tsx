@@ -13,7 +13,7 @@ interface StudentSurveyProps {
   id?: string;
 }
 
-const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
+const Survey: FC<StudentSurveyProps> = ({ id = "discovering_work_type" }) => {
   const { toast } = useToast();
   const { user } = useUser();
 
