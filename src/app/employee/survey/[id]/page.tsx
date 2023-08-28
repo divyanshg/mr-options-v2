@@ -1,7 +1,7 @@
 "use client";
-import { FC } from 'react';
+import dynamic from 'next/dynamic';
 
-import Survey from '@/components/Survey';
+const Survey = dynamic(() => import("@/components/Survey"));
 
 interface pageProps {
   params: {
@@ -9,7 +9,7 @@ interface pageProps {
   };
 }
 
-const Page: FC<pageProps> = ({ params }) => {
+const Page = ({ params }: pageProps) => {
   return <Survey id={params.id} />;
 };
 

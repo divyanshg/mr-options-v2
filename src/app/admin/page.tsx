@@ -1,14 +1,13 @@
 "use client";
 import axios from 'axios';
-import { FC, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
-import ResponseList from '@/components/Admin/ResponseList';
-import SurveyList from '@/components/Admin/SurveyList';
-import Results from '@/components/Results';
-import { useToast } from '@/hooks/use-toast';
 import { useQuery } from '@tanstack/react-query';
 
-interface pageProps {}
+const ResponseList = dynamic(() => import("@/components/Admin/ResponseList"));
+const SurveyList = dynamic(() => import("@/components/Admin/SurveyList"));
+const Results = dynamic(() => import("@/components/Results"));
 
 const getSurveyType = (survey: string) => {
   switch (survey) {
@@ -23,7 +22,7 @@ const getSurveyType = (survey: string) => {
   }
 };
 
-const Page: FC<pageProps> = ({}) => {
+const Page = ({}) => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   const handleAdminLogin = () => {
@@ -42,7 +41,6 @@ const Page: FC<pageProps> = ({}) => {
   const [surveyListOpen, setSurveyListOpen] = useState<boolean>(false);
   const [selectedSurvey, setSelectedSurvey] = useState<any>("");
 
-  const [userTypeListOpen, setUserTypeListOpen] = useState<boolean>(false);
   const [selectedUserType, setSelectedUserType] = useState<any>("student");
 
   const [availableResponses, setAvailableResponses] = useState<any>([]);
@@ -59,16 +57,10 @@ const Page: FC<pageProps> = ({}) => {
     submittedAt: "",
   });
 
-  const {
-    data: surveys,
-    isFetching,
-    isLoading,
-  } = useQuery(["surveys"], async () => {
+  const { data: surveys } = useQuery(["surveys"], async () => {
     const { data } = await axios.get("http://localhost:4000/api/survey");
     return data;
   });
-
-  const { toast } = useToast();
 
   useEffect(() => {
     const fetch = async () => {

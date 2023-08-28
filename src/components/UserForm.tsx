@@ -6,6 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import useUser from '@/hooks/useUser';
 import { useMutation } from '@tanstack/react-query';
 
+import { getFromLocalStorage, setToLocalStorage } from '../lib/utils';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 
@@ -17,9 +18,8 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const { toast } = useToast();
   const { dispatch: userDispatch } = useUser();
-  const [newUser, setNewUser] = useState<any>({});
 
-  const token = localStorage.getItem("access_token");
+  const token = getFromLocalStorage("access_token", false);
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -33,7 +33,7 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
       );
 
       if (data) {
-        localStorage.setItem("user", JSON.stringify(data));
+        setToLocalStorage("user", data);
         userDispatch({
           type: "SET_USER",
           payload: {
@@ -46,12 +46,11 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
     if (token) {
       verifyToken();
     }
-  }, []);
+  }, [token, userDispatch, type]);
 
   const { mutate: verifyUser } = useMutation({
     mutationFn: async (data: any) => {
       setIsLoading(true);
-      setNewUser(data);
       const payload = {
         type,
         ...data,
@@ -76,8 +75,8 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
         user,
       } = data;
 
-      localStorage.setItem("user", JSON.stringify(user));
-      localStorage.setItem("access_token", access_token);
+      setToLocalStorage("user", user);
+      setToLocalStorage("access_token", access_token, false);
 
       console.log(user);
 
@@ -108,7 +107,7 @@ const UserForm: FC<UserFormProps> = ({ type = "student" }) => {
         });
       }
     }
-  }, [errors]);
+  }, [errors, toast]);
 
   const onSubmit = async (data: any) => {
     const _payload = {

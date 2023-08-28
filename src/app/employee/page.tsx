@@ -1,20 +1,19 @@
 "use client";
-import { useEffect } from 'react';
+import dynamic from 'next/dynamic';
 
-import SurveySelector from '@/components/SurveySelector';
-import UserForm from '@/components/UserForm';
 import useUser from '@/hooks/useUser';
 
-const Page = () => {
-  const { user } = useUser();
+const SurveySelector = dynamic(() => import("@/components/SurveySelector"));
+const UserForm = dynamic(() => import("@/components/UserForm"));
 
-  // useEffect(() => {
-  //   console.log(user);
-  // }, [user]);
+const Page = () => {
+  const {
+    user: { type: userType },
+  } = useUser();
 
   return (
     <main className="lg:p-24 min-h-fit">
-      {user.type !== "employee" ? (
+      {userType !== "employee" ? (
         <UserForm type="employee" />
       ) : (
         <SurveySelector />

@@ -1,8 +1,9 @@
 "use client";
 import axios from 'axios';
-import { FC, useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
-import Results from '@/components/Results';
+const Results = dynamic(() => import("@/components/Results"));
 
 interface pageProps {
   params: {
@@ -53,7 +54,7 @@ const getSurveyType = (survey: string) => {
   }
 };
 
-const Page: FC<pageProps> = ({ params }) => {
+const Page = ({ params }: pageProps) => {
   const [result, setResult] = useState<TA | FR | WT | null>(null);
 
   useEffect(() => {

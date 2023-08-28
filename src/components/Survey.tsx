@@ -13,19 +13,6 @@ interface StudentSurveyProps {
   id?: string;
 }
 
-const getSurveyShortCode = (surveyName: string) => {
-  switch (surveyName) {
-    case "transactional_analysis":
-      return "TA";
-    case "FIRO-B":
-      return "FR";
-    case "discovering_work_type":
-      return "WT";
-    default:
-      return "TA";
-  }
-};
-
 const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
   const { toast } = useToast();
   const { user } = useUser();
@@ -50,12 +37,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     return data as Record<string, any>[];
   };
 
-  const {
-    data: isGivenSurvey,
-    error: isGivenSurveyError,
-    isFetching: isGivenSurveyIsFetching,
-    isLoading: isGivenSurveyIsLoading,
-  } = useQuery(["isGiven", id], isGiven, {
+  const { data: isGivenSurvey } = useQuery(["isGiven", id], isGiven, {
     keepPreviousData: true,
     refetchOnWindowFocus: false,
   });
@@ -70,18 +52,14 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     refetchOnWindowFocus: false,
   });
 
-  const {
-    data: existingResponses,
-    error: existingResponsesError,
-    isFetching: existingResponsesIsFetching,
-    isLoading: existingResponsesIsLoading,
-  } = useQuery(["existing_responses", id], fetchExistingResponses, {
-    keepPreviousData: true,
-    refetchOnWindowFocus: false,
-  });
-
-  const [submitted, setSubmitted] = useState<boolean>(false);
-  const [responses, setResponses] = useState<any>({});
+  const { data: existingResponses } = useQuery(
+    ["existing_responses", id],
+    fetchExistingResponses,
+    {
+      keepPreviousData: true,
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const { mutate: saveResponses } = useMutation({
     mutationFn: async (data: any) => {
@@ -119,7 +97,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
         duration: 5000,
       });
     }
-  }, [error]);
+  }, [error, toast]);
 
   if (isGivenSurvey?.given) {
     localStorage.removeItem("access_token");
@@ -167,7 +145,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "transactional_analysis" }) => {
     )?.option_id;
   };
 
-  if (survey) {
+  if (survey && !isGivenSurvey?.given) {
     return (
       <div className="flex flex-col w-full my-4">
         <div className="flex flex-col items-center justify-center space-y-2">
