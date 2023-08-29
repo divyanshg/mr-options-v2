@@ -213,9 +213,12 @@ const WTResults: FC<WTResultsProps> = ({
         </table>
       </div>
       <div className="max-w-[840px] min-w-[840px] md:mx-auto">
-        <div className="relative overflow-hidden">
+        {/* <div className="relative overflow-hidden">
           <PdfViewer report={result} />
-        </div>
+        </div> */}
+        <a href={`https://mroptionsbucket.s3.ap-south-1.amazonaws.com/${result.toUpperCase()}.pdf#toolbar=0`} target="_blank" className="w-[250px] h-[72px] bg-blue-400 rounded text-white focus:bg-blue-500 py-2 px-4">
+          Download Report
+        </a>
       </div>
     </div>
   );
