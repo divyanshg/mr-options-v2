@@ -58,7 +58,7 @@ const Question = ({
       questionId: event.target.name,
       optionId: event.target.value,
       userId: user?.id,
-      userType: user?.type,
+      userType: user?.type ?? "student",
     };
 
     await saveResponse(data);
