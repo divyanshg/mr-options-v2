@@ -48,6 +48,9 @@ const WTResults: FC<WTResultsProps> = ({
     question: any;
     correctAnswer: number;
   }) {
+    if (!counts || !maxes || !sets || !responses) {
+      return <p>Responses not valid</p>;
+    }
     return (
       <td
         key={question}
