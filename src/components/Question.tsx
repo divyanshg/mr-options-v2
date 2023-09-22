@@ -31,6 +31,8 @@ const Question = ({
   const { toast } = useToast();
   const _user = localStorage.getItem("user");
 
+  console.log({ checkedOption });
+
   let user: any;
 
   if (_user) {
@@ -81,7 +83,9 @@ const Question = ({
                 value={option.option_id}
                 className="w-6 h-6"
                 onChange={handleoptionChange}
-                defaultChecked={option.option_id === checkedOption}
+                defaultChecked={Boolean(
+                  Number(option.option_id) == Number(checkedOption)
+                )}
               />
               <span>{option.option_text}</span>
             </label>

@@ -19,7 +19,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "discovering_work_type" }) => {
 
   const isGiven = async () => {
     const { data } = await axios.get(
-      `/survey/given/${id}/${user?.type}/${user?.id}`
+      `/survey/given/${id}/${user?.type ? user.type : "student"}/${user?.id}`
     );
     return data;
   };
@@ -140,9 +140,11 @@ const Survey: FC<StudentSurveyProps> = ({ id = "discovering_work_type" }) => {
 
   const getSelectedOption = (questionId: number) => {
     if (!existingResponses) return 0;
-    return existingResponses?.find(
+    const response = existingResponses?.find(
       (response) => response.question_id === questionId
     )?.option_id;
+
+    return response;
   };
 
   if (survey && !isGivenSurvey?.given) {

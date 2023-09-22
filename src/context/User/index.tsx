@@ -1,5 +1,5 @@
 "use client";
-import { createContext, FC, useReducer } from 'react';
+import { createContext, FC, useEffect, useReducer } from 'react';
 
 interface UserProps {
   children: React.ReactNode;
@@ -35,6 +35,7 @@ type Context = {
 };
 
 const initialState: InitialState = {
+  id: "",
   name: "",
   type: "",
 };
@@ -57,6 +58,13 @@ function reducer(state: InitialState, action: any) {
 
 const User: FC<UserProps> = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      dispatch({ type: "SET_USER", payload: JSON.parse(user) });
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user: state, dispatch }}>
