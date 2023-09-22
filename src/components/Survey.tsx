@@ -100,7 +100,7 @@ const Survey: FC<StudentSurveyProps> = ({ id = "discovering_work_type" }) => {
   }, [error, toast]);
 
   if (isGivenSurvey?.given) {
-    localStorage.removeItem("access_token");
+    // localStorage.removeItem("access_token");
     window.location.href = `/result/${user?.type}/${id}/${user?.id}`;
   }
 
