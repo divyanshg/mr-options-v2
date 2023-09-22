@@ -12,15 +12,6 @@ const TAResults: FC<TAResultsProps> = ({
   const letters = ["A", "B", "C", "D", "E", "F"];
   if (!data || !sums) return null;
 
-  const allObjectsHaveValues = data.every((obj) => Object.keys(obj).length > 0);
-
-  if (allObjectsHaveValues) {
-    // refetch({
-    //   skipCache: true,
-    // });
-    console.log("here", allObjectsHaveValues);
-  }
-
   return (
     <div className="my-4">
       <table className="w-full border-collapse table-auto">
