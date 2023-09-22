@@ -1,6 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import axios from '@/axios';
 import { useQuery } from '@tanstack/react-query';
@@ -82,21 +82,20 @@ const Page = ({}) => {
     if (selectedSurvey && selectedUserType) fetch();
   }, [selectedSurvey, selectedUserType]);
 
-  useEffect(() => {
-    const fetch = async () => {
-      const { data } = await axios({
-        method: "GET",
-        url: `/survey/${selectedSurvey.replace(
-          " ",
-          "_"
-        )}/${selectedUserType}/responses/answers/${selectedResponse?.id}`,
-      });
-
-      setResponseWithAnswers(data);
-    };
-
-    if (selectedResponse) fetch();
+  const fetch = useCallback(async () => {
+    const { data } = await axios({
+      method: "GET",
+      url: `/survey/${selectedSurvey.replace(
+        " ",
+        "_"
+      )}/${selectedUserType}/responses/answers/${selectedResponse?.id}`,
+    });
+    setResponseWithAnswers(data);
   }, [selectedSurvey, selectedUserType, selectedResponse]);
+
+  useEffect(() => {
+    if (selectedResponse) fetch();
+  }, [selectedSurvey, selectedUserType, selectedResponse, fetch]);
 
   if (!loggedIn) return null;
 
@@ -144,6 +143,7 @@ const Page = ({}) => {
           submittedAt={responseWithAnswers.submittedAt}
           type={getSurveyType(selectedSurvey)}
           responses={responseWithAnswers}
+          refetch={fetch}
         />
       ) : null}
     </div>

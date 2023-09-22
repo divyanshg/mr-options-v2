@@ -1,12 +1,13 @@
 "use client";
 import dynamic from 'next/dynamic';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineReload } from 'react-icons/ai';
 import { BsChevronLeft } from 'react-icons/bs';
 
 import axios from '@/axios';
 import { Button } from '@/components/ui/Button';
 import { useToast } from '@/hooks/use-toast';
+import { FR, TA, WT } from '@/interfaces';
 import { getFromLocalStorage } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 
@@ -18,34 +19,6 @@ interface pageProps {
     surveyId: string;
     userId: string;
   };
-}
-
-type WithUser = {
-  user: Record<any, any>;
-};
-
-interface TA extends WithUser {
-  data: Record<string, number>[];
-  sums: Record<string, number>;
-  submittedAt: string;
-}
-
-interface FR extends WithUser {
-  scores: Record<string, number>;
-  totalScores: {
-    row: Record<string, number>;
-    cols: Record<string, number>;
-    grandTotal: number;
-  };
-  submittedAt: string;
-}
-
-interface WT extends WithUser {
-  counts: number[][];
-  maxes: number[];
-  sets: string[][];
-  responses: Record<string, number>;
-  submittedAt: string;
 }
 
 const getSurveyType = (survey: string) => {

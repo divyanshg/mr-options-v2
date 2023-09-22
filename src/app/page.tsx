@@ -2,11 +2,11 @@
 
 import dynamic from 'next/dynamic';
 
-import SurveySelector from '@/components/SurveySelector';
 import useUser from '@/hooks/useUser';
 
 const Survey = dynamic(() => import("@/components/Survey"));
 const UserForm = dynamic(() => import("@/components/UserForm"));
+const SurveySelector = dynamic(() => import("@/components/SurveySelector"));
 
 export default function Home() {
   const { user } = useUser();
