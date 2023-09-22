@@ -2,6 +2,7 @@ import { FC } from 'react';
 
 interface FRResultsProps {
   responses: any;
+  refetch: ({ skipCache }: { skipCache?: boolean | undefined }) => any;
 }
 
 const Td = ({ item, _key }: { item: string | number; _key?: string }) => (
@@ -27,8 +28,10 @@ const Tr = ({
 
 const FRResults: FC<FRResultsProps> = ({
   responses: { scores, totalScores },
+  refetch,
 }) => {
   if (!scores) return null;
+
   return (
     <div>
       <table>

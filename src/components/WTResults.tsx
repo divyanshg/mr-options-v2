@@ -5,6 +5,7 @@ import PdfViewer from './PdfViewer';
 
 interface WTResultsProps {
   responses: any;
+  refetch: ({ skipCache }: { skipCache?: boolean | undefined }) => any;
 }
 
 const Box = ({
@@ -31,6 +32,7 @@ const Box = ({
 
 const WTResults: FC<WTResultsProps> = ({
   responses: { counts, maxes, sets, responses },
+  refetch,
 }: {
   responses: {
     counts: number[][];
@@ -38,6 +40,7 @@ const WTResults: FC<WTResultsProps> = ({
     sets: string[][];
     responses: Record<string, number>[];
   };
+  refetch: ({ skipCache }: { skipCache?: boolean | undefined }) => any;
 }) => {
   if (!sets || sets.length == 0) return null;
 
@@ -51,6 +54,13 @@ const WTResults: FC<WTResultsProps> = ({
     if (!counts || !maxes || !sets || !responses) {
       return <p>Responses not valid</p>;
     }
+
+    // if (Object.keys(responses).length < 123) {
+    //   refetch({
+    //     skipCache: true,
+    //   });
+    // }
+
     return (
       <td
         key={question}
@@ -212,14 +222,11 @@ const WTResults: FC<WTResultsProps> = ({
           </tbody>
         </table>
       </div>
-      <div className="max-w-[840px] min-w-[840px] md:mx-auto">
-        {/* <div className="relative overflow-hidden">
-          <PdfViewer report={result} />
-        </div> */}
+      {/* <div className="max-w-[840px] min-w-[840px] md:mx-auto">
         <a href={`https://mroptionsbucket.s3.ap-south-1.amazonaws.com/${result.toUpperCase()}.pdf#toolbar=0`} target="_blank" className="w-[250px] h-[72px] bg-blue-400 rounded text-white focus:bg-blue-500 py-2 px-4">
           Download Report
         </a>
-      </div>
+      </div> */}
     </div>
   );
 };

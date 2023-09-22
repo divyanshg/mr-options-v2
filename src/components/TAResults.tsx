@@ -2,11 +2,25 @@ import React, { FC } from 'react';
 
 interface TAResultsProps {
   responses: { data: any[]; sums: Record<string, number> };
+  refetch: ({ skipCache }: { skipCache?: boolean | undefined }) => any;
 }
 
-const TAResults: FC<TAResultsProps> = ({ responses: { data, sums } }) => {
+const TAResults: FC<TAResultsProps> = ({
+  responses: { data, sums },
+  refetch,
+}) => {
   const letters = ["A", "B", "C", "D", "E", "F"];
   if (!data || !sums) return null;
+
+  const allObjectsHaveValues = data.every((obj) => Object.keys(obj).length > 0);
+
+  if (allObjectsHaveValues) {
+    // refetch({
+    //   skipCache: true,
+    // });
+    console.log("here", allObjectsHaveValues);
+  }
+
   return (
     <div className="my-4">
       <table className="w-full border-collapse table-auto">

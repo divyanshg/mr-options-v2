@@ -1,6 +1,6 @@
 "use client";
 import dynamic from 'next/dynamic';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AiOutlineReload } from 'react-icons/ai';
 import { BsChevronLeft } from 'react-icons/bs';
 
@@ -98,16 +98,20 @@ const Page = ({ params }: pageProps) => {
     },
   });
 
+  const fetch = async ({ skipCache = false }: { skipCache?: boolean }) => {
+    const { data } = await axios.get(
+      `/survey/${params.surveyId}/${params.userType}/responses/answers/${params.userId}?sendUser=true&skipCache=${skipCache}`
+    );
+
+    setResult(data);
+  };
+
   useEffect(() => {
-    const fetch = async () => {
-      const { data } = await axios.get(
-        `/survey/${params.surveyId}/${params.userType}/responses/answers/${params.userId}?sendUser=true`
-      );
-
-      setResult(data);
-    };
-
-    if (params.surveyId && params.userType && params.userId) fetch();
+    if (params.surveyId && params.userType && params.userId)
+      fetch({
+        skipCache: false,
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.userType, params.surveyId, params.userId]);
 
   const handleGoBack = () => {
@@ -186,6 +190,7 @@ const Page = ({ params }: pageProps) => {
             submittedAt={result.submittedAt}
             type={getSurveyType(params.surveyId)}
             responses={result}
+            refetch={fetch}
           />
         </>
       ) : null}
