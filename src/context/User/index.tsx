@@ -1,6 +1,8 @@
 "use client";
 import { createContext, FC, useEffect, useReducer } from 'react';
 
+import LogOut from '@/components/LogOut';
+
 interface UserProps {
   children: React.ReactNode;
 }
@@ -68,6 +70,7 @@ const User: FC<UserProps> = ({ children }) => {
 
   return (
     <UserContext.Provider value={{ user: state, dispatch }}>
+      {state.id ? <LogOut /> : null}
       {children}
     </UserContext.Provider>
   );

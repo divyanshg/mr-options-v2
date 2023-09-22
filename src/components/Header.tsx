@@ -1,5 +1,7 @@
 import Image from 'next/image';
 
+import useUser from '@/hooks/useUser';
+
 const Header = ({}) => {
   return (
     <nav className="w-full py-4 border-b border-gray-200 navbar-light bg-light h-fit">

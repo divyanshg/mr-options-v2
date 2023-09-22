@@ -1,9 +1,11 @@
 "use client";
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
 import axios from '@/axios';
 import { useQuery } from '@tanstack/react-query';
+
+import { Button } from './ui/Button';
 
 interface SurveySelectorProps {}
 
@@ -26,8 +28,8 @@ const SurveySelector: FC<SurveySelectorProps> = ({}) => {
           {surveys?.map((survey: any) => (
             <Link key={survey.id} href={`/employee/survey/${survey.id}`}>
               <div className="p-4 border border-gray-200 rounded-lg">
-                <p className='text-lg font-semibold'>{survey.title}</p>
-                <p className='truncate'>{survey.description}</p>
+                <p className="text-lg font-semibold">{survey.title}</p>
+                <p className="truncate">{survey.description}</p>
               </div>
             </Link>
           ))}
