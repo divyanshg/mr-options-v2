@@ -1,10 +1,11 @@
 "use client";
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { BsChevronLeft } from 'react-icons/bs';
 
 import axios from '@/axios';
-
-import { getFromLocalStorage } from '../../../../../lib/utils';
+import { Button } from '@/components/ui/Button';
+import { getFromLocalStorage } from '@/lib/utils';
 
 const Results = dynamic(() => import("@/components/Results"));
 
@@ -74,11 +75,19 @@ const Page = ({ params }: pageProps) => {
     if (params.surveyId && params.userType && params.userId) fetch();
   }, [params.userType, params.surveyId, params.userId]);
 
+  const handleGoBack = () => {
+    window.location.href = "/";
+  };
+
   // if (user.name?.length === 0 || user.type.length === 0)
   //   return (window.location.href = "/");
 
   return (
     <div>
+      <Button className="m-4" onClick={handleGoBack}>
+        <BsChevronLeft />
+        All Surveys
+      </Button>
       {result ? (
         <Results
           user={{

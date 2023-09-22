@@ -31,8 +31,6 @@ const Question = ({
   const { toast } = useToast();
   const _user = localStorage.getItem("user");
 
-  console.log({ checkedOption });
-
   let user: any;
 
   if (_user) {
